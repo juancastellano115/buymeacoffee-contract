@@ -6,12 +6,10 @@ const main = async () => {
   console.log("Account balance: ", accountBalance.toString());
 
   const Token = await hre.ethers.getContractFactory("CoffeeMachine");
-  const portal = await Token.deploy({
-    value: hre.ethers.utils.parseEther("0.1"),
-  });
-  await portal.deployed();
+  const cm = await Token.deploy();
+  await cm.deployed();
 
-  console.log("CoffeeMachine address: ", portal.address);
+  console.log("CoffeeMachine address: ", cm.address);
 };
 
 const runMain = async () => {

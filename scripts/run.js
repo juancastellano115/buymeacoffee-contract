@@ -25,7 +25,7 @@ const main = async () => {
   const coffeeTxn = await coffeeContract.buyCoffee(
     "Coffee for you!",
     "Aitana",
-    ethers.utils.parseEther("0.001")
+    {value: ethers.utils.parseEther("0.1")}
   );
   await coffeeTxn.wait();
 
@@ -34,10 +34,6 @@ const main = async () => {
    */
   contractBalance = await hre.ethers.provider.getBalance(
     coffeeContract.address
-  );
-  console.log(
-    "Contract balance:",
-    hre.ethers.utils.formatEther(contractBalance)
   );
 
   let allCoffee = await coffeeContract.getAllCoffee();

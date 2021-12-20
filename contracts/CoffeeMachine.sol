@@ -66,11 +66,12 @@ contract CoffeeMachine {
      */
     function buyCoffee(
         string memory _message,
-        string memory _name,
-        uint256 _payAmount
+        string memory _name
     ) public payable {
         uint256 cost = 0.001 ether;
-        require(_payAmount <= cost, "Insufficient Ether provided");
+        uint256 dexBalance = address(this).balance;
+        require(msg.value >= cost, "Insufficient Ether provided");
+        require(msg.value <= dexBalance, "Not enough tokens in the reserve");
 
         totalCoffee += 1;
         console.log("%s has just sent a coffee!", msg.sender);
@@ -80,7 +81,7 @@ contract CoffeeMachine {
          */
         coffee.push(Coffee(msg.sender, _message, _name, block.timestamp));
 
-        (bool success, ) = owner.call{value: _payAmount}("");
+        (bool success ) = owner.send(msg.value);
         require(success, "Failed to send money");
 
         emit NewCoffee(msg.sender, block.timestamp, _message, _name);
